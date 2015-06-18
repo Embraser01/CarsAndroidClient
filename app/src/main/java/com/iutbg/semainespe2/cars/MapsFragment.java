@@ -48,8 +48,7 @@ public class MapsFragment extends Fragment {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment)this.getFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
+            mMap = ((SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map)).getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();

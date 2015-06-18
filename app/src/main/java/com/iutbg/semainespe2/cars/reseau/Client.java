@@ -5,49 +5,51 @@
  */
 package com.iutbg.semainespe2.cars.reseau;
 
+import android.support.v7.app.AlertDialog;
+
+import com.iutbg.semainespe2.cars.MainActivity;
+
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  *
  * @author Marc-Antoine
  */
-public class Client implements Runnable{
+public class Client extends Thread {
 
     private static Socket socket = null;
-    private static Thread t1;
-    private String adresse;
+    private static Thread threadCo;
     private volatile Connexion co;
 
-    public Client() {
-        System.out.println("Adresse IP du Robot ?");
-        this.adresse = (new Scanner(System.in)).next();
-    }
+    private boolean isCo = false;
 
-    public Client(String adresse) {
-        this.adresse = adresse;
-
-    }
 
     public Connexion getCo() {
         return co;
     }
 
+    public boolean isCo() {
+        return isCo;
+    }
 
     @Override
     public void run() {
-        try {
-            socket = new Socket(adresse,42424);
-            System.out.println("Connexion établie a " + adresse + ", authentification :");
-            co = new Connexion(socket);
-            t1 = new Thread(co);
-            t1.start();
-            //socket.close();
+        synchronized (this) {
+            try {
+                socket = new Socket(MainActivity.ADRESSE, 42424);
+                System.out.println("Connexion établie a " + MainActivity.ADRESSE + ", authentification :");
+                co = new Connexion(socket);
+                threadCo = new Thread(co);
+                threadCo.start();
+
+                isCo = true;
 
 
-        } catch (IOException ex) {
-            System.out.println("Impossible de se connecter au robot (mauvaise adresse ?)");
+            } catch (IOException ex) {
+                isCo = false;
+            }
+            notify();
         }
     }
 }

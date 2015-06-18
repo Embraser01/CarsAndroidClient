@@ -3,12 +3,16 @@ package com.iutbg.semainespe2.cars;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iutbg.semainespe2.cars.reseau.Client;
 
@@ -39,7 +43,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         left = (ImageButton) v.findViewById(R.id.left_arrow);
         cam = (WebView) v.findViewById(R.id.cam);
 
-
         up.setOnClickListener(this);
         up.setOnTouchListener(this);
 
@@ -52,16 +55,43 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         left.setOnClickListener(this);
         left.setOnTouchListener(this);
 
-        mClient = new Client("192.168.43.126");
-        cam.loadUrl("http://192.168.43.126/cam_pic.php");
-        for(int i = 0; i < 50; i++)
-            cam.zoomOut();
+        mClient = new Client();
+        cam.loadUrl("http://"+ MainActivity.ADRESSE +"/cam_pic.php");
 
-        Thread t = new Thread(mClient);
-        t.start();
 
-        Thread t2 = new Thread(new Camera(cam,"http://192.168.43.126/cam_pic.php"));
-        t2.start();
+        mClient.start();
+
+
+        synchronized (mClient) {
+            TextView txt = null;
+            txt = new TextView(this.getActivity());
+            txt.setText("Connexion en cours");
+            txt.setVisibility(View.VISIBLE);
+            txt.setGravity(View.TEXT_ALIGNMENT_CENTER);
+            ((RelativeLayout) v.findViewById(R.id.relativeLayout)).addView(txt);
+
+            try {
+                mClient.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            txt.setVisibility(View.INVISIBLE);
+
+            if(mClient.isCo()){
+                Toast.makeText(this.getActivity(),"Client connecté à " + MainActivity.ADRESSE,Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this.getActivity(),"Impossible de se connecter à " + MainActivity.ADRESSE,Toast.LENGTH_SHORT).show();
+                this.getActivity().finish();
+            }
+        }
+
+
+
+        Camera t2 = new Camera(cam);
+        //t2.start();
+
+
         return v;
     }
 
@@ -114,26 +144,26 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
 
-    private class Camera implements Runnable {
+    private class Camera extends Thread {
 
-        private String url;
         private WebView cam;
 
-        public Camera(WebView cam, String url){
+        public Camera(WebView cam){
             this.cam = cam;
-            this.url = url;
         }
 
         @Override
         public void run() {
-            while(true) {
-                cam.reload();
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                while (true) {
+
+                    cam.reload();
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
-            }
         }
     }
 

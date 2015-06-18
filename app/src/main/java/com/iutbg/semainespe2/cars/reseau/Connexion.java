@@ -41,7 +41,6 @@ public class Connexion implements Runnable{
     
     public void start(){
         this.actif = true;
-        System.out.println("JEEJ");
     }
 
     @Override
