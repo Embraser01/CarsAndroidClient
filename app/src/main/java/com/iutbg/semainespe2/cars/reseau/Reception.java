@@ -38,7 +38,7 @@ public class Reception implements Runnable {
                 }
 
                 } catch (IOException e) {
-
+                    // TODO Gestion deco serveur
                     e.printStackTrace();
                 }
             }
