@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String ADRESSE = "192.168.1.12";
+    public static final String ADRESSE = "192.168.1.11";
 
     private MainFragment mainFragment;
     private MapsFragment mapsFragment;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         mainFragment = new MainFragment();
 
-        mapsFragment = new MapsFragment();
+        //mapsFragment = new MapsFragment();
     }
 
 

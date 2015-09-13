@@ -7,10 +7,15 @@
     android:id="@+id/relativeLayout"
     tools:context="com.iutbg.semainespe2.cars.MainActivityFragment">
 
-    <WebView
+    <!--<WebView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/cam"/>
+        android:id="@+id/cam"/>-->
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/img_cam"/>
 
     <ImageButton
         android:id="@+id/right_arrow"

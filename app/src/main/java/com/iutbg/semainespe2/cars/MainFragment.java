@@ -1,6 +1,10 @@
 package com.iutbg.semainespe2.cars;
 
+import android.animation.ValueAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,13 +12,20 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iutbg.semainespe2.cars.reseau.Client;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -29,7 +40,12 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
     private volatile WebView cam;
 
+    private ImageView img_cam;
+    private DownloadImageTask dlTask;
+
     private Client mClient = null;
+
+    private String URL = "http://" + MainActivity.ADRESSE +"/cam_pic.php";
 
 
     @Override
@@ -37,11 +53,14 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
+
+        img_cam = (ImageView) v.findViewById(R.id.img_cam);
+
         up = (ImageButton) v.findViewById(R.id.up_arrow);
         right = (ImageButton) v.findViewById(R.id.right_arrow);
         down = (ImageButton) v.findViewById(R.id.down_arrow);
         left = (ImageButton) v.findViewById(R.id.left_arrow);
-        cam = (WebView) v.findViewById(R.id.cam);
+        //cam = (WebView) v.findViewById(R.id.cam);
 
         up.setOnClickListener(this);
         up.setOnTouchListener(this);
@@ -55,7 +74,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         left.setOnClickListener(this);
         left.setOnTouchListener(this);
 
-        mClient = new Client();
+        /*mClient = new Client();
         cam.loadUrl("http://"+ MainActivity.ADRESSE +"/cam_pic.php");
 
 
@@ -84,13 +103,31 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
                 Toast.makeText(this.getActivity(),"Impossible de se connecter à " + MainActivity.ADRESSE,Toast.LENGTH_SHORT).show();
                 this.getActivity().finish();
             }
-        }
+        }*/
 
+        ValueAnimator animation = ValueAnimator.ofInt(0, 1);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setDuration(100);
+        animation.setRepeatCount(ValueAnimator.INFINITE);
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
+            public void onAnimationUpdate(ValueAnimator animation) {
+                try {
+                    img_cam.setImageBitmap(new DownloadImageTask().execute().get());
+                    img_cam.invalidate();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
 
-        Camera t2 = new Camera(cam);
-        //t2.start();
+                if (img_cam.getVisibility() != View.VISIBLE) {
+                    animation.cancel();
+                }
+            }
 
+        });
+        animation.start();
 
         return v;
     }
@@ -144,27 +181,16 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
 
-    private class Camera extends Thread {
+    private class DownloadImageTask extends AsyncTask<Void, Void, Bitmap> {
 
-        private WebView cam;
-
-        public Camera(WebView cam){
-            this.cam = cam;
-        }
-
-        @Override
-        public void run() {
-                while (true) {
-
-                    cam.reload();
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }
+        protected Bitmap doInBackground(Void... voids) {
+            try {
+                return BitmapFactory.decodeStream(new java.net.URL(URL).openStream());
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
         }
     }
-
 }
