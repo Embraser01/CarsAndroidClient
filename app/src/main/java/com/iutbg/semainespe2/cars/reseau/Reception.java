@@ -5,6 +5,8 @@
  */
 package com.iutbg.semainespe2.cars.reseau;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -15,33 +17,28 @@ import java.io.IOException;
 
 public class Reception implements Runnable {
 
-    private BufferedReader in;
-    private Connexion co;
+    private BufferedReader in = null;
     private String message = null;
 
-    public Reception(BufferedReader in, Connexion co){
-        this.co = co;
+    public Reception(BufferedReader in){
         this.in = in;
     }
+
 
     @Override
     public void run() {
 
         while(true){
             try {
-
                 message = in.readLine();
-                System.out.println(message);
-                System.out.println("Fin du message");
-                if("00".equals(message.substring(0, 2))){
-                    co.start();
-                }
+                Log.d("CARS", "New message from server : " + message);
 
-                } catch (IOException e) {
-                    // TODO Gestion deco serveur
-                    e.printStackTrace();
-                }
+                // TODO Gestion message retour ( pas besoin pour l'instant )
+
+            } catch (IOException e) {
+                Log.d("CARS", e.getMessage());
             }
+        }
     }
 
 }

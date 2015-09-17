@@ -5,6 +5,8 @@
  */
 package com.iutbg.semainespe2.cars.reseau;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -13,13 +15,12 @@ import java.net.Socket;
  *
  * @author Marc-Antoine
  */
+
 public class Emission {
-    
-    private Socket socket;
+
     private PrintWriter out;
 
     public Emission(Socket socket) {
-        this.socket = socket;
         try {
             out = new PrintWriter(socket.getOutputStream());
         } catch (IOException ex) {
@@ -27,16 +28,13 @@ public class Emission {
         }
     }
     
-    public void emettre(String message){
+    public void send(String message){
         if(out != null){
-            System.out.println("Envoi : " + message);
+            Log.d("CARS","Envoi au serveur : " + message);
+
             out.println(message);
             out.flush();
         }
         
     }
-
-    
-
-    
 }
