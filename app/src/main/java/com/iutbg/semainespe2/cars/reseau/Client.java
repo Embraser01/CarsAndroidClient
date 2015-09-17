@@ -5,7 +5,6 @@
  */
 package com.iutbg.semainespe2.cars.reseau;
 
-import android.support.v7.app.AlertDialog;
 
 import com.iutbg.semainespe2.cars.MainActivity;
 
@@ -16,13 +15,20 @@ import java.net.Socket;
  *
  * @author Marc-Antoine
  */
-public class Client extends Thread {
+public class Client implements Runnable {
+
+    private final String ip;
+
 
     private static Socket socket = null;
     private static Thread threadCo;
     private volatile Connexion co;
 
     private boolean isCo = false;
+
+    public Client(String ip) {
+        this.ip = ip;
+    }
 
 
     public Connexion getCo() {
@@ -35,21 +41,20 @@ public class Client extends Thread {
 
     @Override
     public void run() {
-        synchronized (this) {
-            try {
-                socket = new Socket(MainActivity.ADRESSE, 42424);
-                System.out.println("Connexion établie a " + MainActivity.ADRESSE + ", authentification :");
-                co = new Connexion(socket);
-                threadCo = new Thread(co);
-                threadCo.start();
+        try {
+            socket = new Socket(MainActivity.ADRESSE, 42424);
+            System.out.println("Connexion établie a " + MainActivity.ADRESSE + ", authentification :");
+            co = new Connexion(socket);
+            threadCo = new Thread(co);
+            threadCo.start();
 
-                isCo = true;
+            isCo = true;
 
 
-            } catch (IOException ex) {
-                isCo = false;
-            }
-            notify();
+        } catch (IOException ex) {
+            isCo = false;
         }
+        notify();
+
     }
 }
