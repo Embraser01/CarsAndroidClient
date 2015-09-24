@@ -2,7 +2,6 @@ package com.iutbg.semainespe2.cars;
 
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,12 +12,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String ADRESSE = "192.168.1.11";
+    public static final String ADRESSE = "192.168.43.126";
 
     private MainFragment mainFragment;
-    private MapsFragment mapsFragment;
-
-    private boolean isMap = false;
 
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -50,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         fm = this.getSupportFragmentManager();
 
         mainFragment = new MainFragment();
-
-        //mapsFragment = new MapsFragment();
     }
 
 
@@ -70,17 +64,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_map) {
-            if(isMap){
-                isMap = false;
-                showFragment(mainFragment);
-            }
-            else {
-                isMap = true;
-                showFragment(mapsFragment);
-            }
-            return true;
-        }
 
         return false;
     }
