@@ -20,6 +20,7 @@ public class Traitement {
     }
 
     public boolean updateValues(int x, int y){
+
         if(x > 100 || x < -100 || y > 100 || y < -100) return false;
 
         int turn_percent = x;
