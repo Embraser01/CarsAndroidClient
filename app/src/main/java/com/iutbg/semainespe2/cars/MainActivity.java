@@ -1,6 +1,7 @@
 package com.iutbg.semainespe2.cars;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,7 +13,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String ADRESSE = "192.168.43.126";
+    private String ip = "192.168.43.126";
 
     private MainFragment mainFragment;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         showFragment(mainFragment);
+
     }
 
     private void showFragment(Fragment fragment) {
@@ -64,11 +66,30 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if(id == R.id.search_car_btn){
+            mainFragment.search();
+            return true;
+        }
 
         return false;
     }
 
     public FragmentManager getFm() {
         return fm;
+    }
+
+
+    public void setIp(String ip){
+        this.ip = ip;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

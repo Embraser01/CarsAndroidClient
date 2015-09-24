@@ -3,4 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.iutbg.semainespe2.cars.MainActivity">
 
+    <item android:title="Search For Car"
+        android:id="@+id/search_car_btn"
+        app:showAsAction="always"
+        />
 </menu>
