@@ -78,9 +78,11 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
                 String received = new String(packet.getData(), 0, packet.getLength());
                 Log.d("CARS", received);
 
-                socket.close();
+
 
                 ip = packet.getAddress().toString();
+
+                socket.close();
 
             } catch (SocketTimeoutException e){
                 e.printStackTrace();
@@ -94,6 +96,7 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
 
     @Override
     protected void onPostExecute(String s) {
+
         if(dialog.isShowing()){
             dialog.dismiss();
         }

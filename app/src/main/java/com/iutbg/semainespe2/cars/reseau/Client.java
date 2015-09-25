@@ -19,7 +19,7 @@ import java.net.Socket;
  */
 public class Client implements Runnable {
 
-    private final String ip;
+    private String ip;
 
     private Socket socket = null;
     private Reception reception = null;
@@ -49,10 +49,11 @@ public class Client implements Runnable {
     public void run() {
 
         /* At first, we try to connect if it succeed, we create the reception thread and emission object */
+        ip = ip.substring(1);
 
         try {
             socket = new Socket(ip, 42424);
-            Log.d("CARS", "Connexion établie à " + ip);
+            Log.w("CARS", "Connexion établie à " + ip);
 
             emission = new Emission(socket);
 

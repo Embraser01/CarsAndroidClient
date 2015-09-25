@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         showFragment(mainFragment);
-
     }
 
     private void showFragment(Fragment fragment) {
@@ -87,11 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setIp(String ip){
 
-        if(ip == "127.0.0.1"){
-            this.finish();
-        } else {
+        if(ip != "/127.0.0.1"){
+
             this.ip = ip;
-            mainFragment.setURL("http:/" + ip +"/cam_pic.php");
+            mainFragment.setURL("http:/" + this.ip +"/cam_pic.php");
         }
     }
 

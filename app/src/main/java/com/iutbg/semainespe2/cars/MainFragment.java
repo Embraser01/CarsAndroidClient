@@ -45,7 +45,6 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
-
         img_cam = (ImageView) v.findViewById(R.id.img_cam);
 
         ValueAnimator animation = ValueAnimator.ofInt(0, 1);
@@ -98,6 +97,7 @@ public class MainFragment extends Fragment {
                 try {
                     img_stream = new URL(URL);
                     Log.d("CARS","Stream open webcam");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
