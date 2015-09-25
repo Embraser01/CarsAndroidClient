@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.iutbg.semainespe2.cars.reseau.FindProtocol;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_fragment);
-        
+
+        searchForCar();
+
         setupFragments();
 
 
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if(id == R.id.search_car_btn){
-            mainFragment.search();
+            this.searchForCar();
             return true;
         }
 
@@ -80,16 +86,32 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setIp(String ip){
-        this.ip = ip;
+
+        if(ip == "127.0.0.1"){
+            this.finish();
+        } else {
+            this.ip = ip;
+            mainFragment.setURL("http:/" + ip +"/cam_pic.php");
+        }
+    }
+
+    public void searchForCar(){
+        new FindProtocol(this).execute();
     }
 
     public String getIp() {
         return ip;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mainFragment.terminate();
     }
 }
