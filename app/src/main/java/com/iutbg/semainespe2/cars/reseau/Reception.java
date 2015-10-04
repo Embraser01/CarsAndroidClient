@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- *
  * @author Marc-Antoine
  */
 
@@ -20,7 +19,7 @@ public class Reception implements Runnable {
     private BufferedReader in = null;
     private String message = null;
 
-    public Reception(BufferedReader in){
+    public Reception(BufferedReader in) {
         this.in = in;
     }
 
@@ -28,7 +27,7 @@ public class Reception implements Runnable {
     @Override
     public void run() {
 
-        while(true){
+        while (true) {
             try {
                 message = in.readLine();
                 Log.d("CARS", "New message from server : " + message);

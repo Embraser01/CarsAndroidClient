@@ -21,7 +21,7 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
     private MainActivity activity = null;
     private String ip = "127.0.0.1";
 
-    public FindProtocol(MainActivity activity){
+    public FindProtocol(MainActivity activity) {
         this.activity = activity;
         dialog = new ProgressDialog(activity);
         dialog.setIndeterminate(true);
@@ -63,7 +63,7 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
         }
 
 
-        if(socket != null) {
+        if (socket != null) {
             try {
                 // get response
                 packet = new DatagramPacket(buf, buf.length);
@@ -79,7 +79,7 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
 
                 socket.close();
 
-            } catch (SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -92,7 +92,7 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
     @Override
     protected void onPostExecute(String s) {
 
-        if(dialog.isShowing()){
+        if (dialog.isShowing()) {
             dialog.dismiss();
         }
         activity.setIp(s);

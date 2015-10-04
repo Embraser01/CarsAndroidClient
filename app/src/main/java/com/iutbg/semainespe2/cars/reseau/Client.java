@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
- *
  * @author Marc-Antoine
  */
 public class Client implements Runnable {
@@ -31,7 +30,8 @@ public class Client implements Runnable {
     private volatile boolean closeDemand = false; // For end the connexion
 
 
-    public  Client() {}
+    public Client() {
+    }
 
     public Client(String ip) {
         this.ip = ip;
@@ -41,13 +41,13 @@ public class Client implements Runnable {
         this.closeDemand = true;
     }
 
-    public void send(String message){
-        if(emission != null){
+    public void send(String message) {
+        if (emission != null) {
             emission.send(message);
         }
     }
 
-    public void setIp(String ip){
+    public void setIp(String ip) {
         this.ip = ip;
     }
 
@@ -56,7 +56,7 @@ public class Client implements Runnable {
 
         /* At first, we try to connect if it succeed, we create the reception thread and emission object */
 
-        while (ip == null);
+        while (ip == null) ;
 
         try {
             socket = new Socket(ip, 42424);
@@ -75,11 +75,11 @@ public class Client implements Runnable {
 
         /* We wait until the client want to disconnect */
 
-        while(!closeDemand);
+        while (!closeDemand) ;
 
         /* We close the reception thread */
 
-        if(threadReception != null){
+        if (threadReception != null) {
             threadReception.interrupt();
         }
     }

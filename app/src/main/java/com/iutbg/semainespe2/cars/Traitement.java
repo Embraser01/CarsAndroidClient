@@ -19,25 +19,25 @@ public class Traitement {
         this.mClient = mClient;
     }
 
-    public boolean updateValues(int x, int y){
+    public boolean updateValues(int x, int y) {
 
-        if(x > 100 || x < -100 || y > 100 || y < -100) return false;
+        if (x > 100 || x < -100 || y > 100 || y < -100) return false;
 
         int turn_percent = x;
 
-        left_motor = (int) (y*(float)(MAX_SPEED_VALUE/100));
+        left_motor = (int) (y * (float) (MAX_SPEED_VALUE / 100));
         right_motor = left_motor;
 
-        if(turn_percent < 0){
-            left_motor -= x/5.0;
-        }else if(turn_percent > 0){
-            right_motor -= x/5.0;
+        if (turn_percent < 0) {
+            left_motor -= x / 5.0;
+        } else if (turn_percent > 0) {
+            right_motor -= x / 5.0;
         }
 
         return true;
     }
 
-    public void send(){
+    public void send() {
         mClient.send(Integer.toString(left_motor) + '/' + Integer.toString(turn_motor) + '/' + Integer.toString(right_motor));
     }
 }

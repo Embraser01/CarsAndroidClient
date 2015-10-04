@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- *
  * @author Marc-Antoine
  */
 
@@ -27,14 +26,14 @@ public class Emission {
             out = null;
         }
     }
-    
-    public void send(String message){
-        if(out != null){
-            Log.d("CARS","Envoi au serveur : " + message);
+
+    public void send(String message) {
+        if (out != null) {
+            Log.d("CARS", "Envoi au serveur : " + message);
 
             out.println(message);
             out.flush();
         }
-        
+
     }
 }

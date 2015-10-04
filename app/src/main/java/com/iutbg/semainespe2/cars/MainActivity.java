@@ -1,21 +1,16 @@
 package com.iutbg.semainespe2.cars;
 
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.iutbg.semainespe2.cars.reseau.Client;
 import com.iutbg.semainespe2.cars.reseau.FindProtocol;
-
-import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         searchForCar();
-
 
 
         setupFragments();
@@ -85,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.search_car_btn) {
-            if(pair){
+            if (pair) {
                 pair = false;
                 mClient.send("0/100/0");
-            }else {
+            } else {
                 pair = true;
                 mClient.send("0/-100/0");
             }
@@ -120,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void terminate() {
-        if(mClient != null)
+        if (mClient != null)
             mClient.terminate();
     }
 

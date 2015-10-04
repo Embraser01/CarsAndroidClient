@@ -67,7 +67,7 @@ public class MainFragment extends Fragment {
         return v;
     }
 
-    public void setURL(String url){
+    public void setURL(String url) {
         this.URL = url;
         animation.start();
     }
@@ -76,7 +76,7 @@ public class MainFragment extends Fragment {
     private class DownloadImageTask extends AsyncTask<Void, Void, Bitmap> {
 
         protected Bitmap doInBackground(Void... voids) {
-            if(img_stream == null){
+            if (img_stream == null) {
                 try {
                     img_stream = new URL(URL);
                     Log.d("CARS", "Stream open webcam");
