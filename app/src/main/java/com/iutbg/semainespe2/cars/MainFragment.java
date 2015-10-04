@@ -1,14 +1,11 @@
 package com.iutbg.semainespe2.cars;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +13,9 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
-import com.iutbg.semainespe2.cars.reseau.Client;
-import com.iutbg.semainespe2.cars.reseau.FindProtocol;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -34,10 +26,10 @@ public class MainFragment extends Fragment {
 
     private ImageView img_cam;
 
-    private Client mClient = null;
-    private Thread threadClient = null;
+    private volatile ValueAnimator animation;
 
-    private String URL = null;
+
+    private volatile String URL = null;
     private URL img_stream = null;
 
     @Override
@@ -47,7 +39,7 @@ public class MainFragment extends Fragment {
 
         img_cam = (ImageView) v.findViewById(R.id.img_cam);
 
-        ValueAnimator animation = ValueAnimator.ofInt(0, 1);
+        animation = ValueAnimator.ofInt(0, 1);
         animation.setInterpolator(new LinearInterpolator());
         animation.setDuration(100);
         animation.setRepeatCount(ValueAnimator.INFINITE);
@@ -70,7 +62,6 @@ public class MainFragment extends Fragment {
                 }
             }
         });
-        animation.start();
 
 
         return v;
@@ -78,15 +69,7 @@ public class MainFragment extends Fragment {
 
     public void setURL(String url){
         this.URL = url;
-        mClient = new Client(((MainActivity)getActivity()).getIp());
-
-        threadClient = new Thread(mClient);
-        threadClient.start();
-    }
-
-    public void terminate() {
-        if(mClient != null)
-            mClient.terminate();
+        animation.start();
     }
 
 
@@ -96,7 +79,7 @@ public class MainFragment extends Fragment {
             if(img_stream == null){
                 try {
                     img_stream = new URL(URL);
-                    Log.d("CARS","Stream open webcam");
+                    Log.d("CARS", "Stream open webcam");
 
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -75,8 +75,7 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
                 Log.d("CARS", received);
 
 
-
-                ip = packet.getAddress().toString();
+                ip = packet.getAddress().toString().substring(1);
 
                 socket.close();
 
@@ -96,7 +95,6 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
         if(dialog.isShowing()){
             dialog.dismiss();
         }
-
         activity.setIp(s);
     }
 

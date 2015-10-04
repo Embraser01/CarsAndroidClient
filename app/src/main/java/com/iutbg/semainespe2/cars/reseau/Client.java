@@ -19,7 +19,7 @@ import java.net.Socket;
  */
 public class Client implements Runnable {
 
-    private String ip;
+    private volatile String ip = null;
 
     private Socket socket = null;
     private Reception reception = null;
@@ -30,6 +30,8 @@ public class Client implements Runnable {
     private volatile boolean acceptResponse = false; // Response of the server just after you can control the car | Not In Use Now
     private volatile boolean closeDemand = false; // For end the connexion
 
+
+    public  Client() {}
 
     public Client(String ip) {
         this.ip = ip;
@@ -45,11 +47,16 @@ public class Client implements Runnable {
         }
     }
 
+    public void setIp(String ip){
+        this.ip = ip;
+    }
+
     @Override
     public void run() {
 
         /* At first, we try to connect if it succeed, we create the reception thread and emission object */
-        ip = ip.substring(1);
+
+        while (ip == null);
 
         try {
             socket = new Socket(ip, 42424);
