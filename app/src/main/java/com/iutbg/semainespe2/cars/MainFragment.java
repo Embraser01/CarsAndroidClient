@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import com.iutbg.semainespe2.cars.joystick.JoystickView;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
@@ -24,7 +26,8 @@ import java.util.concurrent.ExecutionException;
 public class MainFragment extends Fragment {
 
 
-    private ImageView img_cam;
+    private ImageView img_cam = null;
+    private JoystickView joystickView = null;
 
     private volatile ValueAnimator animation;
 
@@ -38,8 +41,10 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
         img_cam = (ImageView) v.findViewById(R.id.img_cam);
+        joystickView = (JoystickView) v.findViewById(R.id.joystick);
 
-        animation = ValueAnimator.ofInt(0, 1);
+
+        /*animation = ValueAnimator.ofInt(0, 1);
         animation.setInterpolator(new LinearInterpolator());
         animation.setDuration(100);
         animation.setRepeatCount(ValueAnimator.INFINITE);
@@ -61,15 +66,16 @@ public class MainFragment extends Fragment {
                     }
                 }
             }
-        });
-
+        });*/
 
         return v;
     }
 
-    public void setURL(String url) {
+    public void setURL(String url, Traitement traitement) {
         this.URL = url;
-        animation.start();
+        //animation.start();
+
+        joystickView.setTraitement(traitement);
     }
 
 
@@ -79,7 +85,8 @@ public class MainFragment extends Fragment {
             if (img_stream == null) {
                 try {
                     img_stream = new URL(URL);
-                    Log.d("CARS", "Stream open webcam");
+                    Log.d("CARS_DEBUG", "Stream open webcam");
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -88,7 +95,7 @@ public class MainFragment extends Fragment {
             try {
                 return BitmapFactory.decodeStream(img_stream.openStream());
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+                Log.e("CARS_DEBUG", e.getMessage());
                 e.printStackTrace();
             }
             return null;

@@ -17,7 +17,7 @@ import java.net.Socket;
 
 public class Emission {
 
-    private PrintWriter out;
+    private volatile PrintWriter out;
 
     public Emission(Socket socket) {
         try {
@@ -29,7 +29,7 @@ public class Emission {
 
     public void send(String message) {
         if (out != null) {
-            Log.d("CARS", "Envoi au serveur : " + message);
+            Log.d("CARS_DEBUG", "Envoi au serveur : " + message);
 
             out.println(message);
             out.flush();

@@ -1,22 +1,32 @@
 package com.iutbg.semainespe2.cars;
 
-import com.iutbg.semainespe2.cars.reseau.Client;
+import com.iutbg.semainespe2.cars.reseau.Emission;
 
 /**
  * Created by Marc-Antoine on 24/09/2015.
  */
-public class Traitement {
+public class Traitement implements Runnable{
 
     public static final int MAX_SPEED_VALUE = 255;
 
-    private Client mClient = null;
+    private volatile Emission emission = null;
 
-    private int left_motor = 0;
-    private int turn_motor = 0; // -100 < left < 0 < right < 100
-    private int right_motor = 0;
+    private volatile int old_left_motor = -1;
+    private volatile int old_turn_motor = -1;
+    private volatile int old_right_motor = -1;
 
-    public Traitement(Client mClient) {
-        this.mClient = mClient;
+    private volatile int left_motor = 0;
+    private volatile int turn_motor = 0; // -100 < left < 0 < right < 100
+    private volatile int right_motor = 0;
+
+    private volatile boolean running = true;
+
+    public Traitement(Emission emission) {
+        this.emission = emission;
+    }
+
+    public void stop(){
+        this.running = false;
     }
 
     public boolean updateValues(int x, int y) {
@@ -34,10 +44,22 @@ public class Traitement {
             right_motor -= x / 5.0;
         }
 
+        turn_motor = turn_percent;
+
         return true;
     }
 
-    public void send() {
-        mClient.send(Integer.toString(left_motor) + '/' + Integer.toString(turn_motor) + '/' + Integer.toString(right_motor));
+    @Override
+    public void run() {
+
+        while(running) {
+            if(left_motor != old_left_motor || right_motor != old_right_motor || turn_motor != old_turn_motor){
+                emission.send(Integer.toString(left_motor) + '/' + Integer.toString(turn_motor) + '/' + Integer.toString(right_motor));
+
+                old_left_motor = left_motor;
+                old_right_motor = right_motor;
+                old_turn_motor = turn_motor;
+            }
+        }
     }
 }

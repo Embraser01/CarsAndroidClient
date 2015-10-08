@@ -8,6 +8,9 @@ package com.iutbg.semainespe2.cars.reseau;
 
 import android.util.Log;
 
+import com.iutbg.semainespe2.cars.MainActivity;
+import com.iutbg.semainespe2.cars.Traitement;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,26 +21,33 @@ import java.net.Socket;
  */
 public class Client implements Runnable {
 
+    private MainActivity activity;
+
     private volatile String ip = null;
 
     private Socket socket = null;
-    private Reception reception = null;
+
+    private Traitement traitement = null;
+    private Thread threadTraitement = null;
+
     private Emission emission = null;
 
+    private Reception reception = null;
     private Thread threadReception = null;
 
     private volatile boolean acceptResponse = false; // Response of the server just after you can control the car | Not In Use Now
     private volatile boolean closeDemand = false; // For end the connexion
 
 
-    public Client() {
+    public Client(MainActivity activity) {
+        this.activity = activity;
     }
 
     public Client(String ip) {
         this.ip = ip;
     }
 
-    public void terminate() {
+    public void stop() {
         this.closeDemand = true;
     }
 
@@ -51,6 +61,12 @@ public class Client implements Runnable {
         this.ip = ip;
     }
 
+
+    public Traitement getTraitement() {
+        return traitement;
+    }
+
+
     @Override
     public void run() {
 
@@ -60,17 +76,26 @@ public class Client implements Runnable {
 
         try {
             socket = new Socket(ip, 42424);
-            Log.w("CARS", "Connexion établie à " + ip);
+            Log.w("CARS_DEBUG", "Connexion établie à " + ip);
 
             emission = new Emission(socket);
+
+            traitement = new Traitement(emission);
+            threadTraitement = new Thread(traitement);
+            threadTraitement.start();
 
             reception = new Reception(new BufferedReader(new InputStreamReader(socket.getInputStream())));
             threadReception = new Thread(reception);
             threadReception.start();
 
+
+
         } catch (IOException ex) {
-            Log.d("CARS", "Echec de connexion à " + ip);
+            Log.d("CARS_DEBUG", "Echec de connexion à " + ip);
             this.closeDemand = true;
+        }
+        synchronized (activity) {
+            activity.notify();
         }
 
         /* We wait until the client want to disconnect */
@@ -80,7 +105,10 @@ public class Client implements Runnable {
         /* We close the reception thread */
 
         if (threadReception != null) {
-            threadReception.interrupt();
+            reception.stop();
+        }
+        if (threadTraitement != null) {
+            traitement.stop();
         }
     }
 }

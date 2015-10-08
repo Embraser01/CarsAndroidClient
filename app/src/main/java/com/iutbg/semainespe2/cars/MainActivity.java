@@ -15,12 +15,12 @@ import com.iutbg.semainespe2.cars.reseau.FindProtocol;
 
 public class MainActivity extends AppCompatActivity {
 
-    private volatile String ip = "192.168.43.126";
+    private String ip = "192.168.43.126";
 
     private MainFragment mainFragment;
     private boolean pair = true;
 
-    private Client mClient = null;
+    private Client client = null;
     private Thread threadClient = null;
 
     private FragmentManager fm;
@@ -31,29 +31,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_fragment);
 
-
-        mClient = new Client();
-
-        threadClient = new Thread(mClient);
-
-
-        searchForCar();
-
-
         setupFragments();
         showFragment(mainFragment);
+
+        client = new Client(this);
+        threadClient = new Thread(client);
+
+        searchForCar();
     }
 
     private void showFragment(Fragment fragment) {
-        if (fragment == null)
-            return;
-
+        if (fragment == null) return;
 
         ft = fm.beginTransaction();
 
         ft.replace(R.id.RelativeLayout, fragment);
         ft.commit();
-
     }
 
     private void setupFragments() {
@@ -81,10 +74,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.search_car_btn) {
             if (pair) {
                 pair = false;
-                mClient.send("0/100/0");
+                client.send("0/100/0");
             } else {
                 pair = true;
-                mClient.send("0/-100/0");
+                client.send("0/-100/0");
             }
 
             return true;
@@ -93,33 +86,30 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public FragmentManager getFm() {
-        return fm;
-    }
-
 
     public void setIp(String ip) {
-
         if (ip != "127.0.0.1") {
             this.ip = ip;
-            mainFragment.setURL("http://" + this.ip + "/cam_pic.php");
-            mClient.setIp(this.ip);
+            client.setIp(this.ip);
             threadClient.start();
+
+            synchronized (this){
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            mainFragment.setURL("http://" + this.ip + "/cam_pic.php", client.getTraitement());
+
+        } else {
+            this.finish();
         }
     }
 
     public void searchForCar() {
         new FindProtocol(this).execute();
-
-    }
-
-    public void terminate() {
-        if (mClient != null)
-            mClient.terminate();
-    }
-
-    public String getIp() {
-        return ip;
     }
 
     @Override
@@ -131,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        terminate();
+
+        if (client != null)
+            client.stop();
     }
 }

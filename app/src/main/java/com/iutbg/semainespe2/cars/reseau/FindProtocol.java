@@ -72,7 +72,7 @@ public class FindProtocol extends AsyncTask<Void, Integer, String> {
 
                 // display response
                 String received = new String(packet.getData(), 0, packet.getLength());
-                Log.d("CARS", received);
+                Log.d("CARS_DEBUG", received);
 
 
                 ip = packet.getAddress().toString().substring(1);

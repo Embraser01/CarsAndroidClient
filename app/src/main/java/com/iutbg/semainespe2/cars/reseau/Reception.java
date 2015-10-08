@@ -19,15 +19,20 @@ public class Reception implements Runnable {
     private BufferedReader in = null;
     private String message = null;
 
+    private volatile boolean running = true;
+
     public Reception(BufferedReader in) {
         this.in = in;
     }
 
+    public void stop(){
+        this.running = false;
+    }
 
     @Override
     public void run() {
 
-        while (true) {
+        while (running) {
             try {
                 message = in.readLine();
                 Log.d("CARS", "New message from server : " + message);
