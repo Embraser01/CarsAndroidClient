@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private String ip = "192.168.43.126";
 
     private MainFragment mainFragment;
-    private boolean pair = true;
 
     private Client client = null;
     private Thread threadClient = null;
@@ -53,37 +52,6 @@ public class MainActivity extends AppCompatActivity {
         fm = this.getSupportFragmentManager();
 
         mainFragment = new MainFragment();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.search_car_btn) {
-            if (pair) {
-                pair = false;
-                client.send("0/100/0");
-            } else {
-                pair = true;
-                client.send("0/-100/0");
-            }
-
-            return true;
-        }
-
-        return false;
     }
 
 
