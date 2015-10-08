@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_above="@+id/joystick" />
 
-    <com.iutbg.semainespe2.cars.joystick.JoystickView
+    <com.iutbg.semainespe2.cars.control.JoystickView
         android:id="@+id/joystick"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -26,10 +26,10 @@
         android:layout_toLeftOf="@+id/view"
         android:layout_toStartOf="@+id/view" />
 
-    <com.iutbg.semainespe2.cars.joystick.VerticalSeekBar
+    <com.iutbg.semainespe2.cars.control.VerticalSeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/view"
+        android:id="@+id/seekbar"
         android:layout_alignRight="@+id/img_cam"
         android:layout_alignEnd="@+id/img_cam"
         android:layout_alignParentBottom="true"

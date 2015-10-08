@@ -1,11 +1,10 @@
-package com.iutbg.semainespe2.cars.joystick;
+package com.iutbg.semainespe2.cars.control;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 

@@ -15,10 +15,12 @@ public class Traitement implements Runnable{
     private volatile int old_left_motor = -1;
     private volatile int old_turn_motor = -1;
     private volatile int old_right_motor = -1;
+    private volatile int old_inc = -1;
 
     private volatile int left_motor = 0;
     private volatile int turn_motor = 0; // -100 < left < 0 < right < 100
     private volatile int right_motor = 0;
+    private volatile int inc = 0;
 
     private volatile boolean running = true;
 
@@ -46,13 +48,18 @@ public class Traitement implements Runnable{
     public void run() {
 
         while(running) {
-            if(left_motor != old_left_motor || right_motor != old_right_motor || turn_motor != old_turn_motor){
-                emission.send(Integer.toString(left_motor) + '/' + Integer.toString(turn_motor) + '/' + Integer.toString(right_motor));
+            if(left_motor != old_left_motor || right_motor != old_right_motor || turn_motor != old_turn_motor || inc != old_inc){
+                emission.send(Integer.toString(left_motor) + '/' + Integer.toString(turn_motor) + '/' + Integer.toString(right_motor) + '/' + Integer.toString(old_inc));
 
                 old_left_motor = left_motor;
                 old_right_motor = right_motor;
                 old_turn_motor = turn_motor;
+                old_inc = inc;
             }
         }
+    }
+
+    public void updateIncl(int progress) {
+
     }
 }

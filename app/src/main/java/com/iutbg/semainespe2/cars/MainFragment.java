@@ -10,14 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
-import com.iutbg.semainespe2.cars.joystick.JoystickView;
+import com.iutbg.semainespe2.cars.control.JoystickView;
+import com.iutbg.semainespe2.cars.control.VerticalSeekBar;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -28,6 +27,7 @@ public class MainFragment extends Fragment {
 
     private ImageView img_cam = null;
     private JoystickView joystickView = null;
+    private VerticalSeekBar verticalSeekBar = null;
 
     private volatile ValueAnimator animation;
 
@@ -42,6 +42,7 @@ public class MainFragment extends Fragment {
 
         img_cam = (ImageView) v.findViewById(R.id.img_cam);
         joystickView = (JoystickView) v.findViewById(R.id.joystick);
+        verticalSeekBar = (VerticalSeekBar) v.findViewById(R.id.seekbar);
 
 
         /*animation = ValueAnimator.ofInt(0, 1);
@@ -76,6 +77,7 @@ public class MainFragment extends Fragment {
         //animation.start();
 
         joystickView.setTraitement(traitement);
+        verticalSeekBar.setTraitement(traitement);
     }
 
 

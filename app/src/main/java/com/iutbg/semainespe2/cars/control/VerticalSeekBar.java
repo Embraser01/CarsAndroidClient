@@ -1,4 +1,4 @@
-package com.iutbg.semainespe2.cars.joystick;
+package com.iutbg.semainespe2.cars.control;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,10 +6,14 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.SeekBar;
 
+import com.iutbg.semainespe2.cars.Traitement;
+
 /**
  * Created by Marc-Antoine on 08/10/2015.
  */
 public class VerticalSeekBar extends SeekBar {
+
+    private volatile Traitement traitement = null;
 
     public VerticalSeekBar(Context context) {
         super(context);
@@ -21,6 +25,11 @@ public class VerticalSeekBar extends SeekBar {
 
     public VerticalSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+
+    public void setTraitement(Traitement traitement) {
+        this.traitement = traitement;
     }
 
     @Override
@@ -59,6 +68,10 @@ public class VerticalSeekBar extends SeekBar {
 
             case MotionEvent.ACTION_CANCEL:
                 break;
+        }
+
+        if (traitement != null) {
+            traitement.updateIncl(this.getProgress());
         }
         return true;
     }
