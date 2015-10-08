@@ -8,6 +8,7 @@ import com.iutbg.semainespe2.cars.reseau.Emission;
 public class Traitement implements Runnable{
 
     public static final int MAX_SPEED_VALUE = 255;
+    public static final int MAX_TURN_VALUE = 120;
 
     private volatile Emission emission = null;
 
@@ -29,24 +30,16 @@ public class Traitement implements Runnable{
         this.running = false;
     }
 
-    public boolean updateValues(int x, int y) {
+    public void updateValues(int x, int y) {
 
-        if (x > 100 || x < -100 || y > 100 || y < -100) return false;
+        right_motor = left_motor = y % (MAX_SPEED_VALUE + 1);
+        turn_motor = x % (MAX_TURN_VALUE + 1);
 
-        int turn_percent = x;
-
-        left_motor = (int) (y * (float) (MAX_SPEED_VALUE / 100));
-        right_motor = left_motor;
-
-        if (turn_percent < 0) {
-            left_motor -= x / 5.0;
-        } else if (turn_percent > 0) {
-            right_motor -= x / 5.0;
+        if (turn_motor < 0) {
+            left_motor -= turn_motor / 8.0;
+        } else if (turn_motor > 0) {
+            right_motor -= turn_motor / 8.0;
         }
-
-        turn_motor = turn_percent;
-
-        return true;
     }
 
     @Override

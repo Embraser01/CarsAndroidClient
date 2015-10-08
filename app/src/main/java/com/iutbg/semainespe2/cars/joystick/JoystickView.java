@@ -64,8 +64,8 @@ public class JoystickView extends View {
         }
 
         if (traitement != null) {
-            int x = position_x * 200 / diameter - 100;
-            int y = (diameter - position_y) * 200 / diameter - 100;
+            int x = ((position_x * 2 *Traitement.MAX_TURN_VALUE) / diameter) - Traitement.MAX_TURN_VALUE;
+            int y = ((position_y * 2 *Traitement.MAX_SPEED_VALUE) / diameter) - Traitement.MAX_SPEED_VALUE;
             traitement.updateValues(x, y);
         }
 
