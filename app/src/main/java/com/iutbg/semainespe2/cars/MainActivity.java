@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             client.setIp(this.ip);
             threadClient.start();
 
-            synchronized (this){
+            synchronized (this) {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {

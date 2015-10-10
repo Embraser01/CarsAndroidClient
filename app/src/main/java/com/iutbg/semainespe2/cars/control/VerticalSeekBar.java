@@ -45,7 +45,7 @@ public class VerticalSeekBar extends SeekBar {
 
     protected void onDraw(Canvas c) {
         c.rotate(-90);
-        c.translate(-getHeight(),0);
+        c.translate(-getHeight(), 0);
 
         super.onDraw(c);
     }
@@ -60,8 +60,8 @@ public class VerticalSeekBar extends SeekBar {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
-                int i=0;
-                i=getMax() - (int) (getMax() * event.getY() / getHeight());
+                int i = 0;
+                i = getMax() - (int) (getMax() * event.getY() / getHeight());
                 setProgress(i);
                 onSizeChanged(getWidth(), getHeight(), 0, 0);
                 break;
@@ -71,7 +71,7 @@ public class VerticalSeekBar extends SeekBar {
         }
 
         if (client != null) {
-            client.updateIncl(this.getProgress());
+            client.updateIncl(this.getProgress(),this.getMax());
         }
         return true;
     }

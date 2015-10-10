@@ -73,8 +73,8 @@ public class Client implements Runnable {
         }
     }
 
-    public void updateIncl(int progress) {
-
+    public void updateIncl(int progress, int max) {
+        inc = (progress * 100) / max;
     }
 
 
@@ -106,7 +106,7 @@ public class Client implements Runnable {
         /* We wait until the client want to disconnect while sending new value */
 
         while (running) {
-            if(left_motor != old_left_motor || right_motor != old_right_motor || turn_motor != old_turn_motor || inc != old_inc){
+            if (left_motor != old_left_motor || right_motor != old_right_motor || turn_motor != old_turn_motor || inc != old_inc) {
                 emission.send(Integer.toString(left_motor) + '/' + Integer.toString(turn_motor) + '/' + Integer.toString(right_motor) + '/' + Integer.toString(old_inc));
 
                 old_left_motor = left_motor;

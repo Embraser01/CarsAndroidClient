@@ -25,7 +25,7 @@ public class Reception implements Runnable {
         this.in = in;
     }
 
-    public void stop(){
+    public void stop() {
         this.running = false;
     }
 

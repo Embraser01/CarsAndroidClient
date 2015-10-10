@@ -5,8 +5,6 @@
  */
 package com.iutbg.semainespe2.cars.reseau;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;

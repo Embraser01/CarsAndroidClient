@@ -37,7 +37,7 @@ public class MainFragment extends Fragment {
         return v;
     }
 
-    public void disableJS(){
+    public void disableJS() {
         img_cam.getSettings().setJavaScriptEnabled(false);
     }
 
