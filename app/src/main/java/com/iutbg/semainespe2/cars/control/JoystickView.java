@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.iutbg.semainespe2.cars.Traitement;
+import com.iutbg.semainespe2.cars.reseau.Client;
 
 /**
  * Created by Marc-Antoine on 13/09/2015.
@@ -27,7 +27,7 @@ public class JoystickView extends View {
 
     private Paint paint;
 
-    private volatile Traitement traitement = null;
+    private volatile Client client = null;
 
 
     public JoystickView(Context context, AttributeSet attrs) {
@@ -45,8 +45,8 @@ public class JoystickView extends View {
         paint = new Paint();
     }
 
-    public void setTraitement(Traitement traitement) {
-        this.traitement = traitement;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Override
@@ -62,10 +62,10 @@ public class JoystickView extends View {
             position_y = cy;
         }
 
-        if (traitement != null) {
-            int x = ((position_x * 2 * Traitement.MAX_TURN_VALUE) / diameter) - Traitement.MAX_TURN_VALUE;
-            int y = -(((position_y * 2 * Traitement.MAX_SPEED_VALUE) / diameter) - Traitement.MAX_SPEED_VALUE);
-            traitement.updateValues(x, y);
+        if (client != null) {
+            int x = ((position_x * 2 * Client.MAX_TURN_VALUE) / diameter) - Client.MAX_TURN_VALUE;
+            int y = -(((position_y * 2 * Client.MAX_SPEED_VALUE) / diameter) - Client.MAX_SPEED_VALUE);
+            client.updateValues(x, y);
         }
 
         this.invalidate();

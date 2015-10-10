@@ -6,14 +6,14 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.SeekBar;
 
-import com.iutbg.semainespe2.cars.Traitement;
+import com.iutbg.semainespe2.cars.reseau.Client;
 
 /**
  * Created by Marc-Antoine on 08/10/2015.
  */
 public class VerticalSeekBar extends SeekBar {
 
-    private volatile Traitement traitement = null;
+    private volatile Client client = null;
 
     public VerticalSeekBar(Context context) {
         super(context);
@@ -28,8 +28,8 @@ public class VerticalSeekBar extends SeekBar {
     }
 
 
-    public void setTraitement(Traitement traitement) {
-        this.traitement = traitement;
+    public void setTraitement(Client client) {
+        this.client = client;
     }
 
     @Override
@@ -70,8 +70,8 @@ public class VerticalSeekBar extends SeekBar {
                 break;
         }
 
-        if (traitement != null) {
-            traitement.updateIncl(this.getProgress());
+        if (client != null) {
+            client.updateIncl(this.getProgress());
         }
         return true;
     }

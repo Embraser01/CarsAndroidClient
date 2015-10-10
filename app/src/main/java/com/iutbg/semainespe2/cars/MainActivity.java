@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            mainFragment.setURL("http://" + this.ip + "/cam_pic.php", client.getTraitement());
+            mainFragment.setURL("http://" + this.ip + "/view.php", client);
 
         } else {
             this.finish();

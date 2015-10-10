@@ -1,22 +1,15 @@
 package com.iutbg.semainespe2.cars;
 
-import android.animation.ValueAnimator;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.webkit.WebView;
 
 import com.iutbg.semainespe2.cars.control.JoystickView;
 import com.iutbg.semainespe2.cars.control.VerticalSeekBar;
-
-import java.io.IOException;
-import java.net.URL;
+import com.iutbg.semainespe2.cars.reseau.Client;
 
 
 /**
@@ -25,82 +18,31 @@ import java.net.URL;
 public class MainFragment extends Fragment {
 
 
-    private ImageView img_cam = null;
+    private WebView img_cam = null;
+
     private JoystickView joystickView = null;
     private VerticalSeekBar verticalSeekBar = null;
 
-    private volatile ValueAnimator animation;
-
-
-    private volatile String URL = null;
-    private URL img_stream = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
-        img_cam = (ImageView) v.findViewById(R.id.img_cam);
         joystickView = (JoystickView) v.findViewById(R.id.joystick);
         verticalSeekBar = (VerticalSeekBar) v.findViewById(R.id.seekbar);
-
-
-        /*animation = ValueAnimator.ofInt(0, 1);
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setDuration(100);
-        animation.setRepeatCount(ValueAnimator.INFINITE);
-        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            public void onAnimationUpdate(ValueAnimator animation) {
-                if (URL != null) {
-                    try {
-                        img_cam.setImageBitmap(new DownloadImageTask().execute().get());
-                        img_cam.invalidate();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (img_cam.getVisibility() != View.VISIBLE) {
-                        animation.cancel();
-                    }
-                }
-            }
-        });*/
+        img_cam = (WebView) v.findViewById(R.id.img_cam);
+        img_cam.getSettings().setJavaScriptEnabled(true);
+        img_cam.getSettings().setBuiltInZoomControls(true);
 
         return v;
     }
 
-    public void setURL(String url, Traitement traitement) {
-        this.URL = url;
-        //animation.start();
+    public void setURL(String url, Client client) {
 
-        joystickView.setTraitement(traitement);
-        verticalSeekBar.setTraitement(traitement);
-    }
-
-
-    private class DownloadImageTask extends AsyncTask<Void, Void, Bitmap> {
-
-        protected Bitmap doInBackground(Void... voids) {
-            if (img_stream == null) {
-                try {
-                    img_stream = new URL(URL);
-                    Log.d("CARS_DEBUG", "Stream open webcam");
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                return BitmapFactory.decodeStream(img_stream.openStream());
-            } catch (Exception e) {
-                Log.e("CARS_DEBUG", e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-        }
+        img_cam.loadUrl(url);
+        for(int i = 0; i < 100; i++) img_cam.zoomOut();
+        joystickView.setClient(client);
+        verticalSeekBar.setTraitement(client);
     }
 }
