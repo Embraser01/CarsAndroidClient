@@ -28,7 +28,7 @@ public class VerticalSeekBar extends SeekBar {
     }
 
 
-    public void setTraitement(Client client) {
+    public void setClient(Client client) {
         this.client = client;
     }
 

@@ -66,9 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
             mainFragment.setURL("http://" + this.ip + "/view.php", client);
-
         } else {
             this.finish();
         }
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        mainFragment.disableJS();
         if (client != null)
             client.stop();
     }

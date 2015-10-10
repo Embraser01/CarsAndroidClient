@@ -33,16 +33,18 @@ public class MainFragment extends Fragment {
         verticalSeekBar = (VerticalSeekBar) v.findViewById(R.id.seekbar);
         img_cam = (WebView) v.findViewById(R.id.img_cam);
         img_cam.getSettings().setJavaScriptEnabled(true);
-        img_cam.getSettings().setBuiltInZoomControls(true);
 
         return v;
+    }
+
+    public void disableJS(){
+        img_cam.getSettings().setJavaScriptEnabled(false);
     }
 
     public void setURL(String url, Client client) {
 
         img_cam.loadUrl(url);
-        for(int i = 0; i < 100; i++) img_cam.zoomOut();
         joystickView.setClient(client);
-        verticalSeekBar.setTraitement(client);
+        verticalSeekBar.setClient(client);
     }
 }
